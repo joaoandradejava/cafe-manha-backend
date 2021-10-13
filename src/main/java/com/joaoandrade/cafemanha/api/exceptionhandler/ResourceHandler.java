@@ -25,6 +25,17 @@ public class ResourceHandler extends ResponseEntityExceptionHandler {
 	@Autowired
 	private MessageSource messageSource;
 
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handleErroGenerico(Exception ex, WebRequest request) {
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		Error error = Error.ERRO_INTERNO_NO_SERVIDOR;
+		String message = "Aconteceu um erro interno no servidor";
+		ProblemDetail problemDetail = new ProblemDetail(error.getType(), error.getTitle(), status.value(), message,
+				DEFAULT_MESSAGE);
+
+		return handleExceptionInternal(ex, problemDetail, new HttpHeaders(), status, request);
+	}
+
 	@ExceptionHandler(CafeManhaException.class)
 	public ResponseEntity<Object> handleCafeManha(CafeManhaException ex, WebRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;

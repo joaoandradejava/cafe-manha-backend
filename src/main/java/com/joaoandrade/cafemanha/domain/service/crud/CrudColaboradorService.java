@@ -1,9 +1,11 @@
 package com.joaoandrade.cafemanha.domain.service.crud;
 
+import com.joaoandrade.cafemanha.domain.dto.FiltroColaborador;
 import com.joaoandrade.cafemanha.domain.exception.ColaboradorNaoEncontradoException;
 import com.joaoandrade.cafemanha.domain.model.Colaborador;
 import com.joaoandrade.cafemanha.domain.repository.ColaboradorRepository;
 import com.joaoandrade.cafemanha.domain.service.validation.CpfUnicoValidator;
+import com.joaoandrade.cafemanha.infrastructure.specification.ColaboradorSpecification;
 
 import javax.persistence.EntityManager;
 
@@ -25,8 +27,8 @@ public class CrudColaboradorService {
 	@Autowired
 	private EntityManager entityManager;
 
-	public Page<Colaborador> buscarTodos(Pageable pageable) {
-		return repository.findAll(pageable);
+	public Page<Colaborador> buscarTodos(Pageable pageable, FiltroColaborador filtroColaborador) {
+		return repository.findAll(ColaboradorSpecification.filtrarColaborador(filtroColaborador), pageable);
 	}
 
 	public Colaborador buscarPorId(Long id) {

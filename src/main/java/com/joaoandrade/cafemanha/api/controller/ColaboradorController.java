@@ -22,6 +22,7 @@ import com.joaoandrade.cafemanha.api.disassembler.ColaboradorInputDisassembler;
 import com.joaoandrade.cafemanha.api.input.ColaboradorInput;
 import com.joaoandrade.cafemanha.api.model.ColaboradorFullModel;
 import com.joaoandrade.cafemanha.api.model.ColaboradorModel;
+import com.joaoandrade.cafemanha.domain.dto.FiltroColaborador;
 import com.joaoandrade.cafemanha.domain.model.Colaborador;
 import com.joaoandrade.cafemanha.domain.service.crud.CrudColaboradorService;
 
@@ -42,8 +43,8 @@ public class ColaboradorController {
 	private ColaboradorInputDisassembler colaboradorInputDisassembler;
 
 	@GetMapping
-	public Page<ColaboradorModel> buscarTodos(Pageable pageable) {
-		Page<Colaborador> page = crudColaboradorService.buscarTodos(pageable);
+	public Page<ColaboradorModel> buscarTodos(Pageable pageable, FiltroColaborador filtroColaborador) {
+		Page<Colaborador> page = crudColaboradorService.buscarTodos(pageable, filtroColaborador);
 
 		return page.map(colaborador -> colaboradorModelAssembler.toModel(colaborador));
 	}
@@ -73,7 +74,7 @@ public class ColaboradorController {
 
 		return colaboradorFullModelAssembler.toModel(colaborador);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deletarPorId(@PathVariable Long id) {
